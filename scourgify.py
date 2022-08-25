@@ -1,4 +1,3 @@
-
 import sys              # for argv and exit
 import csv              # for csv handling
 
@@ -16,13 +15,20 @@ def main():
         sys.exit(f"Could not read {sys.argv[1]}")
 
 def csv_clean(i, j):
+    temp_list=[]
     with open(i) as first_file:
-        reader = csv.DictReader(first_file)                     # read first csv sheet into reader
+        reader = csv.DictReader(first_file)                                 # read first csv sheet into reader
+        for row in reader:
+            name = row["name"]
+            house = row["house"]
+            last_name, first_name = name.split(", ")
+            temp_dict={"first": first_name, "last": last_name, "house": house}
+            temp_list.append(temp_dict)
 
     with open(j, "w") as second_file:
-        writer = csv.DictWriter(second_file, fieldnames=["name", "house"])
+        writer = csv.DictWriter(second_file, fieldnames=["first", "last", "house"])
+        writer.writeheader()
+        for line in temp_list:
+            writer.writerow(line)
 
-
-
-       
 main()
